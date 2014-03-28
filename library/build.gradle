@@ -7,8 +7,8 @@ android {
     defaultConfig {
         minSdkVersion 8
         targetSdkVersion 16
-        versionCode 1
-        versionName "1.0.0"
+        versionCode Integer.parseInt(project.VERSION_CODE)
+        versionName project.VERSION_NAME
     }
     buildTypes {
         release {
@@ -23,9 +23,10 @@ android {
 }
 
 dependencies {
-    // compile 'com.android.support:appcompat-v7:+'
     compile 'com.squareup.okhttp:okhttp:1.5.2'
     compile 'com.google.code.gson:gson:2.2.4'
     compile 'org.apache.commons:commons-lang3:3.1'
     compile fileTree(dir: 'libs', include: ['*.jar'])
 }
+
+apply from: '../maven_push.gradle'
