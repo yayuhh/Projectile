@@ -31,7 +31,7 @@ public class Projectile {
     /**
      * Cancel requests based on {@link com.android.volley.RequestQueue.RequestFilter}
      *
-     * @param filter
+     * @param filter Filter to determine whether or not a request should be cancelled.
      */
     public void cancelRequests(RequestQueue.RequestFilter filter) {
         sRequestQueue.cancelAll(filter);
@@ -267,6 +267,8 @@ public class Projectile {
 
     /**
      * Set whether or not to use {@link com.squareup.okhttp.OkHttpClient} for url requests
+     *
+     * @param shouldUse If true, use okHttp for requests; else use standard URLConnection
      */
     public static void useOkHttp(boolean shouldUse) {
         sUseOkHttp = shouldUse;
@@ -274,6 +276,8 @@ public class Projectile {
 
     /**
      * Set whether or not to use {@link com.squareup.okhttp.OkHttpClient} for url requests
+     *
+     * @param baseUrl Base url for requests
      */
     public static void setBaseUrl(String baseUrl) {
         sBaseUrl = baseUrl;
@@ -281,7 +285,8 @@ public class Projectile {
 
     /**
      * Set a custom queue to use for requests
-     * @param queue
+     *
+     * @param queue RequestQueue to use for managing requests
      */
     public static void setRequestQueue(RequestQueue queue) {
         sRequestQueue = queue;

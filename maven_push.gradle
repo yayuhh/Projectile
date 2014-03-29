@@ -94,6 +94,9 @@ afterEvaluate { project ->
 
     task androidJavadocs(type: Javadoc) {
         source = android.sourceSets.main.allJava
+        classpath = fileTree(dir: './library/libs', include: ['*.jar'])
+        classpath += files(android.plugin.runtimeJarList)
+        classpath += configurations.compile
     }
 
     task androidJavadocsJar(type: Jar, dependsOn: androidJavadocs) {

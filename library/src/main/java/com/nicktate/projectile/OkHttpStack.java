@@ -12,7 +12,7 @@ import java.net.URL;
  * uses OkHttp as its transport.
  * </p>
  *
- * @See https://gist.github.com/JakeWharton/5616899
+ * @see <a href="https://gist.github.com/JakeWharton/5616899">https://gist.github.com/JakeWharton/5616899</a>
  */
 public class OkHttpStack extends HurlStack {
     private final OkHttpClient client;
