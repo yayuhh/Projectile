@@ -58,16 +58,17 @@ public class Projectile {
     public class RequestBuilder {
         private final Projectile mProjectile;
         private String mUrl;
+
         private Method mMethod = Method.GET;
         private Priority mPriority = Priority.NORMAL;
-
+        private Map<String, String> mHeaders = new HashMap<>();
+        private Map<String, String> mParams = new HashMap<>();
         private RetryPolicy mRetryPolicy;
         private int mNetworkTimeout = 10000; // 10 seconds
         private int mRetryCount = 3;
         private float mBackoffMultiplier = 1f;
-
-        private Map<String, String> mHeaders = new HashMap<>();
-        private Map<String, String> mParams = new HashMap<>();
+        private Object mTag = null;
+        private boolean mShouldCache = true;
 
         public RequestBuilder(Projectile projectile, String url) {
             mProjectile = projectile;
@@ -124,6 +125,16 @@ public class Projectile {
             return this;
         }
 
+        public RequestBuilder tag(Object tag) {
+            mTag = tag;
+            return this;
+        }
+
+        public RequestBuilder shouldCache(boolean shouldCache) {
+            mShouldCache = shouldCache;
+            return this;
+        }
+
         public <T> void fire(ResponseListener<T> listener) {
             if (listener == null)
                 throw new IllegalStateException("You must set a response listener before you fire your request!");
@@ -150,7 +161,9 @@ public class Projectile {
                     mParams,
                     listener,
                     mPriority.getValue(),
-                    mRetryPolicy
+                    mRetryPolicy,
+                    mTag,
+                    mShouldCache
             ));
         }
     }

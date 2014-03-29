@@ -19,7 +19,7 @@ public class ProjectileRequest<T> extends Request<T> {
     Map<String, String> mHeaders, mParams;
     Priority mPriority = Priority.NORMAL;
 
-    public ProjectileRequest(int method, String url, Map<String, String> headers, Map<String, String> params, final ResponseListener<T> responseListener, Priority p, RetryPolicy retryPolicy) {
+    public ProjectileRequest(int method, String url, Map<String, String> headers, Map<String, String> params, final ResponseListener<T> responseListener, Priority p, RetryPolicy retryPolicy, Object tag, boolean shouldCache) {
         super(method, url, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError volleyError) {
@@ -32,6 +32,8 @@ public class ProjectileRequest<T> extends Request<T> {
         mParams = params;
         mPriority = p;
         setRetryPolicy(retryPolicy);
+        setTag(tag);
+        setShouldCache(shouldCache);
     }
 
     @Override protected void deliverResponse(T response) {

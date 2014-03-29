@@ -86,3 +86,5 @@ public class SampleConfigureActivity extends Activity {
 | `timeout(int timeout)`   | time in milliseconds for a request to timeout   |
 | `retryCount(int count)`       | number of times to retry the request                   |
 | `backoffMultiplier(float multiplier)` | backoff multiplier to apply to socket timeout per retry|
+| `tag(Object tag)` | tag to set on the request for use in cancelling |
+| `shouldCache(boolean cacheRequest)` | determines whether or not the request should be cached |
