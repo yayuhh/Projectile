@@ -1,8 +1,6 @@
 package com.nicktate.projectile;
 
 import com.android.volley.NetworkResponse;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
 import com.android.volley.toolbox.HttpHeaderParser;
 
 import java.io.UnsupportedEncodingException;
