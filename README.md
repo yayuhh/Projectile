@@ -73,12 +73,16 @@ public class SampleConfigureActivity extends Activity {
 }
 ```
 
-## Configurable parameters
-| Key               | Description                                            |
+## Configurable Builder Parameters
+| Method          						  	 | Description                    |
 |:------------------|:-------------------------------------------------------|
-| method            | http method                                            |
-| priority          | priority for volley to set on the request              |
-| network timeout   | time in milliseconds for a request to timeout          |
-| retry count       | number of times to retry the request                   |
-| headers           | optional headers to send with request                  |
-| params            | parameters to add to request (query or payload depending on method type |
+| `method(Method method)`     | http method to be used for the request    |
+| `priority(Priority priority)`   | priority for volley to set on the request              |
+| `addHeader(String key, String value)`     | add header value to request    |
+| `addHeaders(Map<String, String> headers)` | add map of header values to request |   
+| `addParam(String key, String value)`     | add request parameter (type depends on HTTP method)    |
+| `addParams(Map<String, String> params)` | add map of parameters to request (type depends on HTTP method)|  
+| `retryPolicy(RetryPolicy policy)`  | retry policy to use for the request; if set, priority, timeout, and retryCount configureables are ignored           |                                       
+| `timeout(int timeout)`   | time in milliseconds for a request to timeout   |
+| `retryCount(int count)`       | number of times to retry the request                   |
+| `backoffMultiplier(float multiplier)` | backoff multiplier to apply to socket timeout per retry|

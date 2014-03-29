@@ -3,8 +3,10 @@ package com.nicktate.projectile;
 import android.content.Context;
 import android.text.TextUtils;
 
+import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
+import com.android.volley.RetryPolicy;
 import com.android.volley.toolbox.HurlStack;
 import com.android.volley.toolbox.Volley;
 
@@ -17,10 +19,9 @@ import java.util.Map;
 /**
  * Convenience class used to interface with {@link com.android.volley.toolbox.Volley} requests via the builder paradigm.
  */
-public class Projectile<T> {
+public class Projectile {
     private static final Object sLock = new Object();
     private static Projectile sInstance;
-
 
     // global configs
     private static RequestQueue sRequestQueue;
@@ -59,14 +60,28 @@ public class Projectile<T> {
         private String mUrl;
         private Method mMethod = Method.GET;
         private Priority mPriority = Priority.NORMAL;
+
+        private RetryPolicy mRetryPolicy;
         private int mNetworkTimeout = 10000; // 10 seconds
         private int mRetryCount = 3;
+        private float mBackoffMultiplier = 1f;
+
         private Map<String, String> mHeaders = new HashMap<>();
         private Map<String, String> mParams = new HashMap<>();
 
         public RequestBuilder(Projectile projectile, String url) {
             mProjectile = projectile;
             mUrl = url;
+        }
+
+        public RequestBuilder method(Method method) {
+            mMethod = method;
+            return this;
+        }
+
+        public RequestBuilder priority(Priority priority) {
+            mPriority = priority;
+            return this;
         }
 
         public RequestBuilder addHeaders(Map<String, String> headers) {
@@ -89,13 +104,8 @@ public class Projectile<T> {
             return this;
         }
 
-        public RequestBuilder method(Method method) {
-            mMethod = method;
-            return this;
-        }
-
-        public RequestBuilder priority(Priority priority) {
-            mPriority = priority;
+        public RequestBuilder retryPolicy(RetryPolicy policy) {
+            mRetryPolicy = policy;
             return this;
         }
 
@@ -109,6 +119,11 @@ public class Projectile<T> {
             return this;
         }
 
+        public RequestBuilder backoffMultiplier(float backoff) {
+            mBackoffMultiplier = backoff;
+            return this;
+        }
+
         public <T> void fire(ResponseListener<T> listener) {
             if (listener == null)
                 throw new IllegalStateException("You must set a response listener before you fire your request!");
@@ -116,9 +131,16 @@ public class Projectile<T> {
                 throw new IllegalStateException("Your target url cannot be null for the request");
 
 
-            // in-case of GET or DELETE, the volley library ignores parameters passed into request, so we must manually add them to query
+            // volley only uses the getParams() method in PUT or POST requests, so in-case of GET or DELETE,
+            // we must manually add them to query parameters
+            // todo: look into RFC spec about other request types: https://tools.ietf.org/html/rfc2616
             if(mMethod == Method.GET || mMethod == Method.DELETE) {
                 addQueryParams(mUrl, mParams);
+            }
+
+            // if custom retry policy was not provided, use DefaultRetryPolicy with configured params
+            if(mRetryPolicy == null) {
+                mRetryPolicy = new DefaultRetryPolicy(mNetworkTimeout, mRetryCount, mBackoffMultiplier);
             }
 
             mProjectile.sRequestQueue.add(new ProjectileRequest<> (
@@ -128,8 +150,7 @@ public class Projectile<T> {
                     mParams,
                     listener,
                     mPriority.getValue(),
-                    mNetworkTimeout,
-                    mRetryCount
+                    mRetryPolicy
             ));
         }
     }
@@ -146,6 +167,7 @@ public class Projectile<T> {
 
         boolean isFirst = true;
 
+        // re-adding exiting query parameters to ensure they are URL encoded
         if(url.contains("?")) {
             String[] split = url.split("\\?");
             url = split[0];
@@ -171,6 +193,7 @@ public class Projectile<T> {
             }
         }
 
+        // add any passed in parameters to the query
         for(Map.Entry<String, String> entry : params.entrySet()) {
             try {
                 url += isFirst ? "?" : "&";
@@ -185,6 +208,13 @@ public class Projectile<T> {
         return url;
     }
 
+    /**
+     * Add a base url to the provided relative url
+     *
+     * @param baseUrl
+     * @param relativeUrl
+     * @return
+     */
     private static String addBaseUrl(String baseUrl, String relativeUrl) {
         if(TextUtils.isEmpty(baseUrl)) { return relativeUrl; }
         if(TextUtils.isEmpty(relativeUrl)) { return baseUrl; }

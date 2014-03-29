@@ -5,6 +5,7 @@ import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.NetworkResponse;
 import com.android.volley.Request;
 import com.android.volley.Response;
+import com.android.volley.RetryPolicy;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.HttpHeaderParser;
 
@@ -18,7 +19,7 @@ public class ProjectileRequest<T> extends Request<T> {
     Map<String, String> mHeaders, mParams;
     Priority mPriority = Priority.NORMAL;
 
-    public ProjectileRequest(int method, String url, Map<String, String> headers, Map<String, String> params, final ResponseListener<T> responseListener, Priority p, int timeout, int retry) {
+    public ProjectileRequest(int method, String url, Map<String, String> headers, Map<String, String> params, final ResponseListener<T> responseListener, Priority p, RetryPolicy retryPolicy) {
         super(method, url, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError volleyError) {
@@ -30,7 +31,7 @@ public class ProjectileRequest<T> extends Request<T> {
         mHeaders = headers;
         mParams = params;
         mPriority = p;
-        setRetryPolicy(new DefaultRetryPolicy(timeout, retry, 1f));
+        setRetryPolicy(retryPolicy);
     }
 
     @Override protected void deliverResponse(T response) {
