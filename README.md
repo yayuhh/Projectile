@@ -1,5 +1,5 @@
-Projectile
-==========
+<img src="https://raw.github.com/nicktate/projectile/master/images/projectile.png" />
+
 A convenience utility for interfacing with volley and submitting requests. **Projectile** is a simple to use request builder with a focus on easy configuration. Take a look below for some quick examples on how to get started.
 
 Current version: **1.0.x**
@@ -82,9 +82,24 @@ public class SampleConfigureActivity extends Activity {
 | `addHeaders(Map<String, String> headers)` | add map of header values to request |   
 | `addParam(String key, String value)`     | add request parameter (type depends on HTTP method)    |
 | `addParams(Map<String, String> params)` | add map of parameters to request (type depends on HTTP method)|  
-| `retryPolicy(RetryPolicy policy)`  | retry policy to use for the request; if set, priority, timeout, and retryCount configureables are ignored           |                                       
+| `retryPolicy(RetryPolicy policy)`  | retry policy to use for the request; if set, backoffMultiplier, timeout, and retryCount configureables are ignored           |                                       
 | `timeout(int timeout)`   | time in milliseconds for a request to timeout   |
 | `retryCount(int count)`       | number of times to retry the request                   |
 | `backoffMultiplier(float multiplier)` | backoff multiplier to apply to socket timeout per retry|
 | `tag(Object tag)` | tag to set on the request for use in cancelling |
 | `shouldCache(boolean cacheRequest)` | determines whether or not the request should be cached |
+
+Download
+--------
+Maven:
+```xml
+<dependency>
+  <groupId>org.nicktate</groupId>
+  <artifactId>projectile</artifactId>
+  <version>(insert latest version)</version>
+</dependency>
+```
+or Gradle:
+```groovy
+compile 'org.nicktate:projectile:(insert latest version)'
+```
