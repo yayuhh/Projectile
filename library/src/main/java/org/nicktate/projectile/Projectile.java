@@ -1,4 +1,4 @@
-package com.nicktate.projectile;
+package org.nicktate.projectile;
 
 import android.content.Context;
 import android.text.TextUtils;

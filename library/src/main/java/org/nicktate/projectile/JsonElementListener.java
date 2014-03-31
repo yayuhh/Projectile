@@ -1,4 +1,4 @@
-package com.nicktate.projectile;
+package org.nicktate.projectile;
 
 import com.android.volley.NetworkResponse;
 import com.android.volley.toolbox.HttpHeaderParser;

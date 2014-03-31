@@ -9,9 +9,8 @@ import android.view.MenuItem;
 import com.android.volley.NetworkResponse;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.HttpHeaderParser;
-import com.nicktate.projectile.Projectile;
-import com.nicktate.projectile.ResponseListener;
-import com.nicktate.projectile.StringListener;
+import org.nicktate.projectile.Projectile;
+import org.nicktate.projectile.ResponseListener;
 
 import java.io.UnsupportedEncodingException;
 
