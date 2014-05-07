@@ -146,7 +146,7 @@ public class Projectile {
             // we must manually add them to query parameters
             // todo: look into RFC spec about other request types: https://tools.ietf.org/html/rfc2616
             if(mMethod == Method.GET || mMethod == Method.DELETE) {
-                addQueryParams(mUrl, mParams);
+                mUrl = addQueryParams(mUrl, mParams);
             }
 
             // if custom retry policy was not provided, use DefaultRetryPolicy with configured params
