@@ -90,9 +90,17 @@ public class Projectile {
             return this;
         }
 
+        public RequestBuilder headers(Map<String, String> headers) {
+            return addHeaders(headers);
+        }
+
         public RequestBuilder addHeader(String key, String value) {
             if (key != null && value != null) mHeaders.put(key, value);
             return this;
+        }
+
+        public RequestBuilder header(String key, String value) {
+            return addHeader(key, value);
         }
 
         public RequestBuilder addParams(Map<String, String> params) {
@@ -100,9 +108,17 @@ public class Projectile {
             return this;
         }
 
+        public RequestBuilder params(Map<String, String> params) {
+            return addParams(params);
+        }
+
         public RequestBuilder addParam(String key, String value) {
             if (key != null && value != null) mParams.put(key, value);
             return this;
+        }
+
+        public RequestBuilder param(String key, String value) {
+            return addParam(key, value);
         }
 
         public RequestBuilder retryPolicy(RetryPolicy policy) {
